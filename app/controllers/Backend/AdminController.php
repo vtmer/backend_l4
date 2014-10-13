@@ -5,6 +5,10 @@ use Controllers\Backend\BackBaseController;
 use User;
 use Auth;
 use Hash;
+use Input;
+use App;
+use Config;
+use Redirect;
 
 class AdminController extends BackBaseController {
 
@@ -93,6 +97,7 @@ class AdminController extends BackBaseController {
         $rules = array(
             'email' => 'required|emial|unique:users',
             'password' => 'required|alpha_dash|between:6,16|confirmed',
+            'group_id' => 'required',
         );
         // 自定义验证消息
         $messages = array(
@@ -102,7 +107,8 @@ class AdminController extends BackBaseController {
             'password.required' => '请输入密码',
             'password.alpha_dash' => '密码格式不正确',
             'password.between' => '密码长度保持在:min和:max之间',
-            'password.confirmed' => '两次输入的密码不正确'
+            'password.confirmed' => '两次输入的密码不正确',
+            'group_id.required' => '请选择用户组',
         );
 
         $validator = Validator::make($data, $rules, $messages);
@@ -112,13 +118,15 @@ class AdminController extends BackBaseController {
             $user->email = Input::get('email');
             $user->password = Input::get('password');
             $user->nickname = Input::get('nickname', 'None');
+            $user->group_id = Input::get('group_id');
             if ($user->save()) {
-                return Redirect::back();
+                return Redirect::back()
+                    ->with('success', '成功添加用户');
             } else {
                 // 添加失败
                 return Redirect::back()
                     ->withInput()
-                    ->withErrors(array('add' => '注册失败'));
+                    ->with('error', '注册失败');
             }
         } else {
             return Redirect::back()
