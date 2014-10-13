@@ -3,6 +3,7 @@
 use Controllers\Backend\BackBaseController;
 use Validator;
 use Auth;
+use User;
 use Group;
 use Action;
 use Redirect;
@@ -118,8 +119,12 @@ class GroupController extends BackendBaseController {
     public function deleteGroup($id)
     {
         $group = Group::findOrFail($id);
+        $groupId = $group->id;
         if ($group->delete()) {
             Action::where('group_id', '=', $group->id)->delete();
+
+            // 删除用户组下的所有用户
+            User::where('group_id', '=', $groupId)->delete();
 
             return Redirect::back()
                 ->with('success', '删除成功');
