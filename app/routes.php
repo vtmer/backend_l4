@@ -38,8 +38,31 @@ Route::group(array('prefix' => 'backend', 'before'=> 'auth'), function () {
         'uses' => 'Controllers\Backend\AdminController@getLogout'
     ));
 
+    # 用户组管理
+    Route::group(array('prefix' => 'users-group', 'before' => 'permission'), function() {
+
+        #新建用户组
+        Route::post('/create', array(
+            'as' => 'BackendUserGroupCreate',
+            'uses' => 'Controllers\Backend\GroupController@postCreateGroup'
+        ));
+
+        #修改用户组
+        Route::post('/update/{id}', array(
+            'as' => 'BackendUserGroupUpdate',
+            'uses' => 'Controllers\Backend\GroupController@updateGroup'
+        ));
+
+        #删除用户组
+        Route::post('/delete/{id}', array(
+            'as' => 'BackendUserGroupDelete',
+            'uses' => 'Controllers\Backend\GroupController@deleteGroup'
+        ));
+
+    });
+
     #用户管理
-    Route::group(array('prefix' => 'users', 'before' => ''), function () {
+    Route::group(array('prefix' => 'users', 'before' => 'permission'), function () {
 
         # 用户管理首页
         Route::get('/', array(
@@ -81,5 +104,6 @@ Route::group(array('prefix' => 'backend', 'before'=> 'auth'), function () {
             'uses' => 'Controllers\Backend\AdminController@postDelete'
         ));
     });
+
 });
 
