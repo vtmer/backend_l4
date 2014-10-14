@@ -105,5 +105,27 @@ Route::group(array('prefix' => 'backend', 'before'=> 'auth'), function () {
         ));
     });
 
+    #栏目管理
+    Route::group(array('prefix' => 'category', 'before' => 'permission'), function () {
+
+        #新建栏目
+        Route::post('/create', array(
+            'as' => 'BackendCategoryCreate',
+            'uses' => 'Controllers\Backend\CategoryControler@createCategory'
+        ));
+
+        #修改栏目
+        Route::post('/update/{id}', array(
+            'as' => 'BackendCategoryUpdate',
+            'uses' => 'Controllers\Backend\CategoryControler@updateCategroy'
+        ));
+
+        #删除栏目
+        Route::post('/delete/{id}', array(
+            'as' => 'BackendCategoryDelete',
+            'uses' => 'Controllers\Backend\CategoryControler@deleteCategoty'
+        ));
+    });
+
 });
 
