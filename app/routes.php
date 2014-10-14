@@ -127,5 +127,76 @@ Route::group(array('prefix' => 'backend', 'before'=> 'auth'), function () {
         ));
     });
 
+    # 文章管理
+    Route::group(array('prefix' => 'articles', 'before' => 'permission'), function () {
+
+        # 文章列表页面
+        Route::get('/', array(
+            'as' => 'BackendArticle',
+            'uses' => 'Controllers\Backend\ArticleController@getArticles'
+        ));
+
+        # 回收站页面
+        Route::get('/trashed', array(
+            'as' => 'BackendTrashed',
+            'uses' => 'Controllers\Backend\ArticleController@getTrashedArticles'
+        ));
+
+        # 文章发表
+        Route::post('/create', array(
+            'as' => 'BackendArticleCreate',
+            'uses' => 'Controllers\Backend\ArticleController@createArticle'
+        ));
+
+        # 文章编辑页面
+        Route::get('/update/{id}', array(
+            'as' => 'BackendArticleGetUpdate',
+            'uses' => 'Controllers\Backend\ArticleController@getUpdateAricles'
+        ));
+
+        # 文章修改
+        Route::post('/update/{id}', array(
+            'as' => 'BackendArticleUpdate',
+            'uses' => 'Controllers\Backend\ArticleController@updateArticle'
+        ));
+
+        # 文章彻底删除
+        Route::get('/delete/{id}', array(
+            'as' => 'BackendArticleDelete',
+            'uses' => 'Controllers\Backend\ArticleController@deleteTrashedArticle'
+        ));
+
+        # 清空回收站
+        Route::get('/empty-trash', array(
+            'as' => 'BackendArticleTrashEmpty',
+            'uses' => 'Controllers\Backend\ArticleController@deleteAllTrashedArticle'
+        ));
+
+        # 文章软删除
+        Route::get('/trashed/{id}', array(
+            'as' => 'BackendArticleTrash',
+            'uses' => 'Controllers\Backend\ArticleController@softdeleteArticle'
+        ));
+
+        # 文章恢复
+        Route::get('/restore/{id}', array(
+            'as' => 'BackendArticleRestore',
+            'uses' => 'Controllers\Backend\ArticleController@restoreTrashedArticle'
+        ));
+
+        # 改变文章排序
+        Route::post('/sort', array(
+            'as' => 'BackendArticleSort',
+            'uses' => 'Controllers\Backend\ArticleController@articleSort'
+        ));
+
+        # 改变文章发布状态
+        Route::get('/status/{id}', array(
+            'as' => 'BackendArticleStatus',
+            'uses' => 'Controllers\Backend\ArticleController@articlePublicStatus'
+        ));
+
+    });
+
 });
 
