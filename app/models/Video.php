@@ -1,0 +1,10 @@
+<?php
+
+class Video extends Eloquent {
+
+    /**
+     * 属性：表名
+     */
+    protected $table = 'videos';
+
+}
