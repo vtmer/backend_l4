@@ -198,5 +198,39 @@ Route::group(array('prefix' => 'backend', 'before'=> 'auth'), function () {
 
     });
 
+    # 图片轮播管理
+    Route::group(array('prefix' => 'photoviewpager', 'before' => 'permission'), function () {
+
+        # 图片轮播页面
+        Route::get('/', array(
+            'as' => 'BackendGetPhotoViewPager',
+            'uses' => 'Controllers\Backend\PhotoViewPagerController@getPhotoViewPager'
+        ));
+
+        # 新建图片轮播
+        Route::get('/create', array(
+            'as' => 'BackendPhotoViewPagerCreate',
+            'uses' => 'Controllers\Backend\PhotoViewPagerController@createPhotoViewPager'
+        ));
+
+        # 上传图片
+        Route::post('/upload/{id}', array(
+            'as' => 'BackendPhotoViewPagerUpload',
+            'uses' => 'Controllers\Backend\PhotoViewPagerController@uploadImage'
+        ));
+
+        # 删除图片
+        Route::post('/delele-image/{id}', array(
+            'as' => 'BackendPhotoViewPagerImageDelete',
+            'uses' => 'Controllers\Backend\PhotoViewPagerController@deleteImage'
+        ));
+
+        # 删除图片轮播
+        Route::get('/delete-photovp', array(
+            'as' => 'BackendPhotoViewPagerDelete',
+            'uses' => 'Controllers\Backend\PhotoViewPagerController@deletePhotoViewPager'
+        ));
+    });
+
 });
 
